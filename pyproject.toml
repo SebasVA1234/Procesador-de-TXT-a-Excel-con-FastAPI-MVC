@@ -1,21 +1,22 @@
-[project]
-name = "pr3"
+[tool.poetry]
+name = "procesador-de-txt-a-excel"
 version = "0.1.0"
-description = ""
-authors = [
-    {name = "SebasVa1234",email = "gatorebeldes@gmail.com"}
-]
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "fastapi (>=0.115.12,<0.116.0)",
-    "uvicorn (>=0.34.2,<0.35.0)",
-    "pandas (>=2.2.3,<3.0.0)",
-    "openpyxl (>=3.1.5,<4.0.0)",
-    "python-multipart (>=0.0.20,<0.0.21)"
-]
+description = "Procesador automático de archivos TXT y Excel con FastAPI"
+authors = ["Sebas Vasquez <gatorebeldes@gmail.com>"]
 
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.2"
+uvicorn = "^0.34.2"
+pandas = "*"
+openpyxl = "*"
+sqlalchemy = "*"
+python-multipart = "*"
+python-dotenv = "^1.1.0"
+
+[tool.poetry.dev-dependencies]
+watchfiles = "*"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
