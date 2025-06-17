@@ -44,23 +44,45 @@ function App() {
       showError("Por favor selecciona un archivo primero.");
       return;
     }
-
+  
+    const formData = new FormData();
+    formData.append("file", fileInputRef.current.files[0]);
+  
     setIsProcessing(true);
     setStatusMessage("Procesando archivo...");
     setStatusColor("text-blue-600");
-
-    // Aquí puedes usar fetch si deseas enviar al backend
-    setTimeout(() => {
-      const success = true; // Simulación
-      setIsProcessing(false);
-      if (success) {
-        setStatusMessage("✅ Archivo procesado exitosamente.");
-        setStatusColor("text-green-600");
-      } else {
-        showError("❌ Error al procesar el archivo.");
+  
+    try {
+      const endpoint = selectedCase === "pagos"
+        ? "/archivo/procesar_proveedores"
+        : "/archivo/procesar_compras";
+  
+      const response = await fetch(`http://localhost:8000${endpoint}`, {
+        method: "POST",
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error en el procesamiento");
       }
-    }, 1500);
+  
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+  
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "archivo_procesado.xlsx";
+      a.click();
+  
+      setStatusMessage("✅ Archivo procesado exitosamente.");
+      setStatusColor("text-green-600");
+    } catch (error) {
+      showError("❌ Error al procesar el archivo.");
+    } finally {
+      setIsProcessing(false);
+    }
   };
+  
 
   return (
     <div className="bg-gradient-to-r from-blue-50 via-white to-blue-50 min-h-screen flex items-center justify-center p-6">
