@@ -24,3 +24,6 @@ frontend/.env
 *.bak
 *.tmp
 *.old
+#Informacion sensible 
+output/
+uploads/
