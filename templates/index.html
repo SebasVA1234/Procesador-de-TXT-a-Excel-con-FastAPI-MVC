@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Procesador de TXT</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Procesador de Archivos TXT</h1>
+
+    <form id="formulario" enctype="multipart/form-data">
+      <label for="tipo">Tipo de archivo:</label>
+      <select id="tipo" name="tipo">
+        <option value="pagos">Pagos a proveedores</option>
+        <option value="compras">Compras (orden)</option>
+      </select>
+
+      <label for="archivo">Seleccionar archivo TXT:</label>
+      <input type="file" id="archivo" name="file" accept=".txt" required>
+
+      <button type="submit">Procesar y Descargar Excel</button>
+      <p id="mensaje" class="mensaje"></p>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('formulario').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const archivo = document.getElementById('archivo').files[0];
+      const tipo = document.getElementById('tipo').value;
+
+      if (!archivo || !archivo.name.endsWith('.txt')) {
+        document.getElementById('mensaje').textContent = '❌ Debes subir un archivo .txt válido.';
+        return;
+      }
+
+      const formData = new FormData();
+      const prefijo = tipo === 'pagos' ? 'pagos_' : 'compras_';
+      const renamedFile = new File([archivo], prefijo + archivo.name, { type: archivo.type });
+
+      formData.append('file', renamedFile);
+      document.getElementById('mensaje').textContent = '⏳ Procesando...';
+
+      try {
+        const response = await fetch('/procesar', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error();
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "archivo_procesado.xlsx";
+        a.click();
+
+        document.getElementById('mensaje').textContent = '✅ Archivo procesado y descargado.';
+      } catch {
+        document.getElementById('mensaje').textContent = '❌ Hubo un error al procesar el archivo.';
+      }
+    });
+  </script>
+</body>
+</html>

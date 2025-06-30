@@ -1,20 +1,20 @@
 [tool.poetry]
-name = "procesador-de-txt-a-excel"
+name = "procesador-txt-excel"
 version = "0.1.0"
-description = "Procesador automático de archivos TXT y Excel con FastAPI"
-authors = ["Sebas Vasquez <gatorebeldes@gmail.com>"]
+description = "App FastAPI que convierte archivos .txt a Excel"
+authors = ["Sebas Vásquez <tucorreo@example.com>"]
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
 fastapi = "^0.115.2"
 uvicorn = "^0.34.2"
-pandas = "*"
-openpyxl = "*"
-sqlalchemy = "*"
-python-multipart = "*"
-python-dotenv = "^1.1.0"
+pandas = "^2.2.2"
+openpyxl = "^3.1.2"
+jinja2 = "^3.1.3"
+python-multipart = "^0.0.20"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 watchfiles = "*"
 
 [build-system]
