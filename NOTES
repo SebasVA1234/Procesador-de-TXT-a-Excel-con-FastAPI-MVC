@@ -1,0 +1,11 @@
+docker compose down                  # apaga app + túnel
+docker compose up -d --build         # levanta en segundo plano
+
+docker compose logs -f app            # ver logs de la app
+docker compose logs -f ngrok          # ver logs del túnel
+
+docker compose logs tunnel \
+| sed -n 's/.*https:\/\/\([a-zA-Z0-9.-]*trycloudflare\.com\).*/https:\/\/\1/p' \
+| tail -1
+# ver URL del túnel (si usas cloudflared)
+# Si usas ngrok, ve a https://dashboard.ngrok.com/get-started/your-authtoken

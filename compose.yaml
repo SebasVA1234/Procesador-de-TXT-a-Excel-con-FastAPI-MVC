@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"        # opcional (para acceder localmente en http://localhost:5000)
+    volumes:
+      - .:/app
+      - ./uploads:/app/uploads
+      - ./output:/app/output
+    restart: unless-stopped
+    networks: [devnet]
+    # Opcional: si añadiste Basic Auth en main.py
+    # environment:
+    #   - APP_USER=sebas
+    #   - APP_PASS=una_contra_segura
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --url http://app:5000
+    depends_on: [app]
+    restart: unless-stopped
+    networks: [devnet]
+
+networks:
+  devnet:
+    driver: bridge

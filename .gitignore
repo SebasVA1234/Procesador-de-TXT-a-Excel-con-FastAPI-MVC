@@ -1,29 +1,32 @@
-# 🐍 Python
+# Python
 __pycache__/
 *.py[cod]
-*.sqlite3
-.env
-.venv/
+*.pyo
+*.pyd
 *.log
+*.sqlite3
+.venv/
+.env
+*.env
 
-# 📦 Poetry
-poetry.lock
+# Node/Vite (por si hay frontend)
+node_modules/
+dist/
+.vite/
 
-# 📁 VSCode (si usas)
+# Editors / OS
 .vscode/
-
-# 🧩 Frontend / Node.js
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
-frontend/.env
-
-# 🚫 Archivos temporales
+.idea/
 .DS_Store
-*.swp
-*.bak
-*.tmp
-*.old
-#Informacion sensible 
-output/
+
+# Docker
+*.pid
+*.tar
+docker-data/
+
+# Tu app
 uploads/
+output/
+
+# Git
+*.orig
