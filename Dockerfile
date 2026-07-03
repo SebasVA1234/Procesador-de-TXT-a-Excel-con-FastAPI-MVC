@@ -17,11 +17,17 @@ COPY pyproject.toml poetry.lock* /app/
 RUN poetry config virtualenvs.create false \
  && poetry install --no-root --no-interaction --no-ansi
 
+# Auth: validación del JWT de Helper Ecualand. Se instala con pip (aparte de
+# Poetry) para no tener que regenerar poetry.lock por una sola dependencia.
+RUN pip install "pyjwt>=2.9,<3"
+
 # Copiar el código
 COPY . /app
 
 # Asegurar carpetas usadas por tu app
 RUN mkdir -p uploads output
 
+# Railway (y cualquier PaaS) inyecta el puerto en $PORT; localmente cae a 5000.
+# Forma shell para poder expandir la variable. Sin --reload (eso es dev).
 EXPOSE 5000
-CMD ["uvicorn","main:app","--host","0.0.0.0","--port","5000","--reload"]
+CMD ["sh","-c","uvicorn main:app --host 0.0.0.0 --port ${PORT:-5000}"]
